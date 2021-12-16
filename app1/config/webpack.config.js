@@ -218,7 +218,7 @@ module.exports = function (webpackEnv) {
       // webpack uses `publicPath` to determine where the app is being served from.
       // It requires a trailing slash, or the file assets will get an incorrect path.
       // We inferred the "public path" (such as / or /my-project) from homepage.
-      publicPath: paths.publicUrlOrPath,
+      publicPath: "http://localhost:3006/",
       // Point sourcemap entries to original disk location (format as URL on Windows)
       devtoolModuleFilenameTemplate: isEnvProduction
         ? info =>
@@ -592,15 +592,11 @@ module.exports = function (webpackEnv) {
         // 提供给其他服务加载的文件
         // filename: "app1RemoteEntry.js",
         // 唯一ID，用于标记当前服务
-        name: "selfApp2",
-        filename: "app2remoteEntry.js",
+        name: "app1",
+        filename: "app1RemoteEntry.js",
         // 需要暴露的模块，使用时通过 `${name}/${expose}` 引入
         exposes: {
-          "./App2": "./src/App",
-        },
-        remotes: {
-          app1: "app1@http://localhost:3006/app1RemoteEntry.js",
-          app2: "app2@http://localhost:3002/remoteEntry.js",
+          "./AppTitle": "./src/AppTitle",
         }
       }),
       // Inlines the webpack runtime script. This script is too small to warrant
@@ -650,7 +646,7 @@ module.exports = function (webpackEnv) {
       //   can be used to reconstruct the HTML if necessary
       new WebpackManifestPlugin({
         fileName: 'asset-manifest.json',
-        publicPath: "http://localhost:3008/",
+        publicPath: paths.publicUrlOrPath,
         generate: (seed, files, entrypoints) => {
           const manifestFiles = files.reduce((manifest, file) => {
             manifest[file.name] = file.path;
